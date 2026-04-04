@@ -479,8 +479,14 @@ body.dark .cal-cell.l1{background:#14532d}body.dark .cal-cell.l2{background:#166
 
 /* ── Responsive ── */
 @media(max-width:600px){
-  .header{padding:8px 10px 0}
-  .header-top h1{font-size:1rem}
+  .header{padding:6px 8px 0}
+  .header-top{gap:4px;overflow:hidden}
+  .header-top h1{font-size:.85rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;flex:1}
+  .tool-btn{padding:4px 5px;font-size:.74rem}
+  .tool-btn-group{gap:2px;flex-shrink:0}
+  /* hide lower-priority buttons on small screens */
+  #pwa-install-btn{display:none!important}
+  #goal-ring-container{display:none}
   .filters-toggle{display:block}
   .filters-body{display:none;flex-direction:column;gap:5px;width:100%}
   .filters-body.open{display:flex}
@@ -497,10 +503,12 @@ body.dark .cal-cell.l1{background:#14532d}body.dark .cal-cell.l2{background:#166
   .modal{padding:14px;border-radius:10px}
   .modal-top{flex-direction:column}
   .modal-cover img,.no-cover-lg{width:100%;max-width:160px;margin:0 auto}
-  .count-row{gap:4px}
+  .count-row{gap:4px;flex-wrap:wrap}
   .btn-sm{font-size:.7rem;padding:3px 6px}
   .stat-grid{grid-template-columns:1fr 1fr}
   .botd-bar{display:none}
+  .timer-btn{width:44px;height:44px;bottom:14px;right:14px;font-size:1rem}
+  .bulk-bar{padding:6px 10px;font-size:.75rem}
 }
 """
 print("CSS done")
