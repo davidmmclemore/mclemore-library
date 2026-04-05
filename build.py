@@ -903,7 +903,7 @@ function mfSetValue(key,val){
   mfClearKey(key);
   if(!val)return;
   _mf[key].add(val);
-  const cb=document.querySelector(\`#mf-opts-\${key} input[value="\${CSS.escape(val)}"]\`);
+  const cb=document.querySelector(`#mf-opts-${key} input[value="${CSS.escape(val)}"]`);
   if(cb)cb.checked=true;
   mfUpdateLabel(key);
 }
@@ -2776,12 +2776,12 @@ html = f"""<!DOCTYPE html>
 </html>"""
 
 # ── Write & push ──────────────────────────────────────────────────────────────
-out = '/sessions/lucid-dreamy-meitner/mnt/outputs/McLemore-Library.html'
+out = '/sessions/bold-awesome-sagan/mnt/outputs/McLemore-Library.html'
 with open(out, 'w') as f:
     f.write(html)
 print(f"HTML written: {len(html.encode())//1024} KB")
 
-repo = '/sessions/lucid-dreamy-meitner/McLemore-Library-work'
+repo = '/sessions/bold-awesome-sagan/McLemore-Library-work'
 shutil.copy(out, os.path.join(repo, 'index.html'))
 subprocess.run(['git','config','http.postBuffer','524288000'], cwd=repo, capture_output=True)
 subprocess.run(['git','add','index.html'], cwd=repo, capture_output=True)
