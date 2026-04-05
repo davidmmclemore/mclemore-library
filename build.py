@@ -717,24 +717,39 @@ function renderBotd(){
 }
 
 /* ── Fuzzy search ── */
-function fuzzyMatch(hay, q){
-  if(hay.includes(q)) return 3; // exact phrase
+function searchScore(b, q){
+  if(!q) return 1;
+  const title  = (b.t  ||'').toLowerCase();
+  const author = (b.a  ||'').toLowerCase();
+  const cat    = (b.c  ||'').toLowerCase();
+  const series = (b.sr ||'').toLowerCase();
+  const loc    = (b.l  ||'').toLowerCase();
+  const fmt    = (b.f  ||'').toLowerCase();
+  const desc   = (b.s  ||'').toLowerCase();
+  const tags   = (b.tg ||[]).join(' ').toLowerCase().replace(/-/g,' ');
+  const meta   = [cat,series,loc,fmt].join(' ');
+  if(title.includes(q))  return 1000+(title.indexOf(q)===0?200:0);
+  if(author.includes(q)) return 900;
+  if(meta.includes(q))   return 700;
+  if(tags.includes(q))   return 600;
+  if(desc.includes(q))   return 500;
   const tokens=q.split(/\s+/).filter(Boolean);
-  let score=0;
+  if(!tokens.length) return 1;
+  let score=0, matched=0;
   for(const tok of tokens){
-    if(hay.includes(tok)){score+=2;continue;}
-    // allow 1 char off for tokens ≥ 4 chars
-    if(tok.length>=4){
-      let found=false;
-      for(let i=0;i<=hay.length-tok.length+1;i++){
-        let diff=0;
-        for(let j=0;j<tok.length;j++) if(hay[i+j]!==tok[j]) diff++;
-        if(diff<=1){found=true;break;}
-      }
-      if(found){score+=1;continue;}
+    let best=0;
+    if(title.includes(tok))  best=Math.max(best,20);
+    if(author.includes(tok)) best=Math.max(best,16);
+    if(cat.includes(tok)||series.includes(tok)||fmt.includes(tok)||loc.includes(tok)) best=Math.max(best,10);
+    if(tags.includes(tok))   best=Math.max(best,8);
+    if(desc.includes(tok))   best=Math.max(best,4);
+    if(best===0&&tok.length>=3){
+      const re=new RegExp('(?:^|\\s|-)'+tok.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'));
+      if(re.test([title,author,meta,tags,desc].join(' '))) best=2;
     }
-    return 0; // token not found at all
+    if(best>0){matched++;score+=best;}
   }
+  if(matched<Math.max(1,Math.ceil(tokens.length*0.6))) return 0;
   return score;
 }
 
@@ -776,7 +791,8 @@ function mfInit(key,selectId){
   const sel=document.getElementById(selectId);
   if(!sel)return;
   if(document.getElementById('mf-wrap-'+key))return;
-  const opts=[...sel.options].filter(o=>o.value).map(o=>({v:o.value,l:o.text}));
+  const toLabel=key==='tag'?(v=>v.replace(/-/g,' ').replace(/\b\w/g,c=>c.toUpperCase())):((v,t)=>t);
+  const opts=[...sel.options].filter(o=>o.value).map(o=>({v:o.value,l:toLabel(o.value,o.text)}));
   _mfOpts[key]=opts;
   const wrap=document.createElement('div');
   wrap.className='mf-wrap'; wrap.id='mf-wrap-'+key;
@@ -877,8 +893,9 @@ function mfSearch(key,q){
   const lq=q.toLowerCase();
   labels.forEach(el=>{
     const cb=el.querySelector('input[type=checkbox]');
-    const val=cb?cb.value.toLowerCase():'';
-    el.style.display=(!lq||val.includes(lq))?'':'none';
+    const val=(cb?cb.value:'').toLowerCase().replace(/-/g,' ');
+    const lbl=(el.querySelector('span')||el).textContent.toLowerCase();
+    el.style.display=(!lq||val.includes(lq)||lbl.includes(lq))?'':'none';
   });
 }
 
@@ -912,14 +929,10 @@ function applyF(){
   const minR=parseInt(document.getElementById('fMinR').value)||0;
   const ratings=lsGetRatings();
   const shelves=loadShelves();
-  const fuzzyResults=[];
-  filtered=ALL.filter((b,idx)=>{
-    if(_q){
-      const hay=[b.t,b.a,b.s,...(b.tg||[])].join(' ').toLowerCase();
-      const score=fuzzyMatch(hay,_q);
-      if(score<=0)return false;
-      fuzzyResults.push({b,score,idx});
-    }
+  const scoreMap=new Map();
+  if(_q) ALL.forEach(b=>{const s=searchScore(b,_q);if(s>0)scoreMap.set(b.id,s);});
+  filtered=ALL.filter(b=>{
+    if(_q&&!scoreMap.has(b.id))return false;
     if(_mf.author.size&&!_mf.author.has(b.a))return false;
     if(_mf.cat.size&&!_mf.cat.has(b.c))return false;
     if(_mf.fmt.size&&!_mf.fmt.has(b.f))return false;
@@ -932,10 +945,7 @@ function applyF(){
     if(minR&&(ratings[b.id]||0)<minR)return false;
     return true;
   });
-  if(_q&&fuzzyResults.length){
-    fuzzyResults.sort((a,b)=>b.score-a.score||a.idx-b.idx);
-    filtered=fuzzyResults.map(x=>x.b);
-  }
+  if(_q) filtered.sort((a,b)=>(scoreMap.get(b.id)||0)-(scoreMap.get(a.id)||0));
   if(sort==='title_az')filtered.sort((a,b)=>a.t.localeCompare(b.t));
   else if(sort==='title_za')filtered.sort((a,b)=>b.t.localeCompare(a.t));
   else if(sort==='author_az')filtered.sort((a,b)=>a.a.localeCompare(b.a));
