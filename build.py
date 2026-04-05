@@ -531,6 +531,30 @@ body.dark .cal-cell.l1{background:#14532d}body.dark .cal-cell.l2{background:#166
 .mf-clear-btn:hover{text-decoration:underline}
 .mf-count-lbl{font-size:.7rem;color:var(--text3)}
 @media(max-width:600px){.mf-panel{max-width:calc(100vw - 24px)}}
+
+/* ── External book form ── */
+.ext-lbl{font-size:.78rem;font-weight:600;display:block;margin-bottom:3px;color:var(--text)}
+.ext-inp{width:100%;padding:7px 9px;border:1px solid var(--border);border-radius:6px;background:var(--surface2);color:var(--text);font-size:.82rem;box-sizing:border-box}
+.ext-inp:focus{outline:2px solid var(--accent);outline-offset:-1px}
+.ext-shelf-chip{padding:4px 10px;border:1px solid var(--border);border-radius:20px;background:var(--surface);color:var(--text2);cursor:pointer;font-size:.75rem;transition:all .12s;user-select:none}
+.ext-shelf-chip.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.ext-book-banner{background:#fef3c7;color:#92400e;border-radius:8px;padding:8px 12px;font-size:.78rem;display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.dark .ext-book-banner{background:#451a03;color:#fcd34d}
+.ext-lookup-row{display:flex;gap:6px;margin-bottom:10px}
+.ext-lookup-inp{flex:1;padding:7px 9px;border:1px solid var(--border);border-radius:6px;background:var(--surface2);color:var(--text);font-size:.82rem;box-sizing:border-box}
+.ext-lookup-inp:focus{outline:2px solid var(--accent);outline-offset:-1px}
+.ext-lookup-btn{padding:7px 11px;border:none;border-radius:6px;background:var(--accent);color:#fff;cursor:pointer;font-size:.8rem;white-space:nowrap;flex-shrink:0}
+.ext-lookup-btn:disabled{opacity:.5;cursor:default}
+.ext-results{display:flex;flex-direction:column;gap:5px;margin-bottom:10px;max-height:240px;overflow-y:auto}
+.ext-result-card{display:flex;gap:8px;padding:7px 9px;border:1px solid var(--border);border-radius:8px;cursor:pointer;background:var(--surface);transition:background .12s;align-items:flex-start}
+.ext-result-card:hover{background:var(--surface2);border-color:var(--accent)}
+.ext-result-img{width:30px;height:45px;object-fit:cover;border-radius:3px;flex-shrink:0;background:var(--surface2)}
+.ext-result-img-ph{width:30px;height:45px;border-radius:3px;flex-shrink:0;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:1rem}
+.ext-result-info{min-width:0;flex:1}
+.ext-result-title{font-size:.78rem;font-weight:700;color:var(--text);overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.ext-result-author{font-size:.72rem;color:var(--text2);margin-top:1px}
+.ext-result-meta{font-size:.68rem;color:var(--text3);margin-top:2px}
+.ext-divider{border:none;border-top:1px solid var(--border);margin:4px 0 10px}
 """
 print("CSS done")
 
@@ -1583,6 +1607,11 @@ function openExternalModal(editId){
   document.getElementById('ext-modal-title').textContent=editId?'\u270f\ufe0f Edit Tracked Book':'\u2795 Track a Book';
   document.getElementById('ext-save-btn').textContent=editId?'Save Changes':'Save & Track';
   idField.value=editId||'';
+  // Clear lookup state
+  const lq=document.getElementById('ext-lookup-q'); if(lq)lq.value='';
+  const lr=document.getElementById('ext-lookup-results'); if(lr)lr.innerHTML='';
+  // Hide lookup section when editing (already have data), show for new
+  const ls=document.getElementById('ext-lookup-section'); if(ls)ls.style.display=editId?'none':'';
   if(editId){
     const b=bookMap[editId]||{};
     const dates=lsGetDates()[editId]||{};
@@ -1603,6 +1632,59 @@ function openExternalModal(editId){
 function closeExternalModal(e){
   if(e&&e.type==='click'&&e.target!==document.getElementById('ext-overlay')&&!e.target.classList.contains('modal-close'))return;
   document.getElementById('ext-overlay').classList.remove('open'); document.body.style.overflow='';
+}
+
+/* ── Google Books lookup ── */
+let _extBooks=[];
+async function lookupBookOnline(){
+  const q=document.getElementById('ext-lookup-q').value.trim();
+  if(!q)return;
+  const btn=document.getElementById('ext-lookup-btn');
+  const res=document.getElementById('ext-lookup-results');
+  btn.disabled=true; btn.textContent='Searching\u2026';
+  res.innerHTML='<div style="padding:8px 2px;color:var(--text2);font-size:.78rem">\uD83D\uDD0D Looking up books\u2026</div>';
+  try{
+    const url='https://www.googleapis.com/books/v1/volumes?q='+encodeURIComponent(q)+'&maxResults=6&printType=books';
+    const data=await fetch(url).then(r=>r.json());
+    if(!data.items||!data.items.length){
+      res.innerHTML='<div style="padding:8px 2px;color:var(--text2);font-size:.78rem">No results found \u2014 try a different title or author.</div>';
+    } else {
+      _extBooks=data.items.map(item=>{
+        const v=item.volumeInfo||{};
+        return{
+          title:v.title||'',
+          author:(v.authors||[]).join(', '),
+          pages:v.pageCount||0,
+          cat:(v.categories||[])[0]||'',
+          img:v.imageLinks?(v.imageLinks.thumbnail||v.imageLinks.smallThumbnail||'').replace('http://','https://'):''
+        };
+      });
+      res.innerHTML=_extBooks.map((r,i)=>`
+        <div class="ext-result-card" onclick="fillExtBook(${i})">
+          ${r.img?`<img class="ext-result-img" src="${esc(r.img)}" onerror="this.style.display='none'">`
+                 :`<div class="ext-result-img-ph">\uD83D\uDCD6</div>`}
+          <div class="ext-result-info">
+            <div class="ext-result-title">${esc(r.title)}</div>
+            <div class="ext-result-author">${esc(r.author)}</div>
+            <div class="ext-result-meta">${[r.pages?r.pages+' pages':'',r.cat].filter(Boolean).join(' \u00b7 ')}</div>
+          </div>
+        </div>`).join('');
+    }
+  }catch(err){
+    res.innerHTML='<div style="padding:8px 2px;color:var(--text2);font-size:.78rem">Search unavailable \u2014 fill in manually.</div>';
+  }
+  btn.disabled=false; btn.textContent='\uD83D\uDD0D Look up';
+}
+function fillExtBook(i){
+  const r=_extBooks[i]; if(!r)return;
+  document.getElementById('ext-title').value=r.title;
+  document.getElementById('ext-author').value=r.author;
+  if(r.pages)document.getElementById('ext-pages').value=r.pages;
+  document.getElementById('ext-cat').value=r.cat;
+  document.getElementById('ext-img').value=r.img;
+  document.getElementById('ext-lookup-results').innerHTML='';
+  document.getElementById('ext-lookup-q').value='';
+  document.getElementById('ext-title').focus();
 }
 
 function saveExternalBook(){
@@ -2600,8 +2682,16 @@ html = f"""<!DOCTYPE html>
   <div class="modal" style="max-width:440px;max-height:90vh;overflow-y:auto">
     <button class="modal-close" onclick="closeExternalModal()">✕</button>
     <h2 id="ext-modal-title" style="font-size:.95rem;font-weight:700;margin-bottom:4px">➕ Track a Book</h2>
-    <p style="font-size:.75rem;color:var(--text2);margin-bottom:14px">Books tracked here won't appear in your Google Sheet library — they're stored locally and synced to your Gist.</p>
+    <p style="font-size:.75rem;color:var(--text2);margin-bottom:12px">Books tracked here won't appear in your Google Sheet library — they're stored locally and synced to your Gist.</p>
     <input type="hidden" id="ext-editing-id">
+    <div id="ext-lookup-section">
+      <div class="ext-lookup-row">
+        <input type="text" id="ext-lookup-q" class="ext-lookup-inp" placeholder="Search by title or author to auto-fill…" onkeydown="if(event.key==='Enter'){event.preventDefault();lookupBookOnline();}">
+        <button class="ext-lookup-btn" id="ext-lookup-btn" onclick="lookupBookOnline()">🔍 Look up</button>
+      </div>
+      <div id="ext-lookup-results"></div>
+      <hr class="ext-divider" id="ext-divider">
+    </div>
     <div style="display:flex;flex-direction:column;gap:11px">
       <div>
         <label class="ext-lbl">Title *</label>
