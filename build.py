@@ -159,6 +159,14 @@ a{color:inherit;text-decoration:none}
 .btn-accent:hover{opacity:.88}
 
 /* ── Book of the Day banner ── */
+.botd-toggle{display:flex;align-items:center;gap:5px;font-size:.72rem;color:var(--text3);cursor:pointer;background:none;border:none;padding:2px 0 4px;width:100%}
+.botd-toggle:hover{color:var(--text)}
+.botd-toggle .toggle-arrow{font-size:.6rem;transition:transform .2s}
+.botd-toggle.open .toggle-arrow{transform:rotate(90deg)}
+.recent-toggle{display:flex;align-items:center;gap:5px;font-size:.72rem;color:var(--text3);cursor:pointer;background:none;border:none;padding:4px 8px 2px;width:100%}
+.recent-toggle:hover{color:var(--text)}
+.recent-toggle .toggle-arrow{font-size:.6rem;transition:transform .2s}
+.recent-toggle.open .toggle-arrow{transform:rotate(90deg)}
 .botd-bar{display:flex;align-items:center;gap:8px;padding:6px 10px;background:linear-gradient(90deg,#4f46e5,#7c3aed);color:#fff;font-size:.76rem;cursor:pointer;border-radius:8px;margin-bottom:6px}
 .botd-bar img{width:28px;height:42px;object-fit:cover;border-radius:3px;flex-shrink:0}
 .botd-bar .botd-lbl{font-weight:700;font-size:.7rem;opacity:.85;margin-bottom:1px}
@@ -466,7 +474,6 @@ body.dark .cal-cell.l1{background:#14532d}body.dark .cal-cell.l2{background:#166
 .card{touch-action:pan-y}
 .swipe-hint{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:2rem;border-radius:8px;pointer-events:none;opacity:0;transition:opacity .15s;z-index:4}
 .swipe-hint-shelf{background:rgba(16,185,129,.3)}
-.swipe-hint-rate{background:rgba(245,158,11,.3)}
 
 /* ── Share card canvas ── */
 .share-card-modal{max-width:440px}
@@ -479,14 +486,8 @@ body.dark .cal-cell.l1{background:#14532d}body.dark .cal-cell.l2{background:#166
 
 /* ── Responsive ── */
 @media(max-width:600px){
-  .header{padding:6px 8px 0}
-  .header-top{gap:4px;overflow:hidden}
-  .header-top h1{font-size:.85rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;flex:1}
-  .tool-btn{padding:4px 5px;font-size:.74rem}
-  .tool-btn-group{gap:2px;flex-shrink:0}
-  /* hide lower-priority buttons on small screens */
-  #pwa-install-btn{display:none!important}
-  #goal-ring-container{display:none}
+  .header{padding:8px 10px 0}
+  .header-top h1{font-size:1rem}
   .filters-toggle{display:block}
   .filters-body{display:none;flex-direction:column;gap:5px;width:100%}
   .filters-body.open{display:flex}
@@ -503,13 +504,32 @@ body.dark .cal-cell.l1{background:#14532d}body.dark .cal-cell.l2{background:#166
   .modal{padding:14px;border-radius:10px}
   .modal-top{flex-direction:column}
   .modal-cover img,.no-cover-lg{width:100%;max-width:160px;margin:0 auto}
-  .count-row{gap:4px;flex-wrap:wrap}
+  .count-row{gap:4px}
   .btn-sm{font-size:.7rem;padding:3px 6px}
   .stat-grid{grid-template-columns:1fr 1fr}
-  .botd-bar{display:none}
-  .timer-btn{width:44px;height:44px;bottom:14px;right:14px;font-size:1rem}
-  .bulk-bar{padding:6px 10px;font-size:.75rem}
 }
+
+/* ── Multi-filter dropdowns ── */
+.mf-wrap{position:relative;display:inline-block}
+.mf-btn{display:flex;align-items:center;gap:5px;padding:5px 9px;border:1px solid var(--border);border-radius:8px;font-size:.78rem;background:var(--surface);color:var(--text);cursor:pointer;white-space:nowrap;transition:border-color .15s}
+.mf-btn:hover{border-color:var(--accent)}
+.mf-btn.active{border-color:var(--accent);background:var(--surface2)}
+.mf-badge{background:var(--accent);color:#fff;border-radius:10px;padding:1px 6px;font-size:.68rem;font-weight:700;line-height:1.4}
+.mf-arrow{font-size:.6rem;color:var(--text3)}
+.mf-panel{display:none;position:absolute;top:calc(100% + 4px);left:0;z-index:300;background:var(--surface);border:1px solid var(--border);border-radius:10px;box-shadow:0 6px 24px rgba(0,0,0,.15);min-width:200px;max-width:280px;padding:6px 0}
+.mf-panel.open{display:flex;flex-direction:column}
+.mf-search-wrap{padding:6px 8px;border-bottom:1px solid var(--border)}
+.mf-search{width:100%!important;padding:4px 8px!important;border:1px solid var(--border)!important;border-radius:6px!important;font-size:.78rem!important;background:var(--surface2)!important;color:var(--text)!important;box-sizing:border-box!important;flex:none!important;min-width:0!important}
+.mf-opts{max-height:220px;overflow-y:auto;padding:4px 0}
+.mf-opt{display:flex;align-items:center;gap:8px;padding:5px 12px;font-size:.8rem;color:var(--text);cursor:pointer;transition:background .1s}
+.mf-opt:hover{background:var(--surface2)}
+.mf-opt input[type=checkbox]{accent-color:var(--accent);width:14px!important;height:14px!important;cursor:pointer!important;flex:none!important;min-width:0!important;padding:0!important;border:1px solid var(--border)!important;border-radius:3px!important;background:none!important}
+.mf-opt span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mf-footer{display:flex;align-items:center;justify-content:space-between;padding:6px 10px;border-top:1px solid var(--border);margin-top:2px}
+.mf-clear-btn{font-size:.72rem;color:var(--accent);cursor:pointer;background:none;border:none;padding:0}
+.mf-clear-btn:hover{text-decoration:underline}
+.mf-count-lbl{font-size:.7rem;color:var(--text3)}
+@media(max-width:600px){.mf-panel{max-width:calc(100vw - 24px)}}
 """
 print("CSS done")
 
@@ -582,8 +602,14 @@ function pushRecent(id){
 function renderRecentStrip(){
   const rec=lsGetRecent().map(id=>bookMap[id]).filter(Boolean);
   const strip=document.getElementById('recent-strip');
+  const toggleBtn=document.getElementById('recent-toggle');
   if(!strip)return;
-  if(!rec.length){ strip.style.display='none'; return; }
+  if(!rec.length){
+    if(toggleBtn)toggleBtn.style.display='none';
+    return;
+  }
+  if(toggleBtn)toggleBtn.style.display='flex';
+  _applyRecentState();
   strip.style.display='flex';
   strip.innerHTML=`<span class="recent-lbl">Recently viewed</span>`+rec.map(b=>`
     <div class="recent-thumb" onclick="openModal('${esc(b.id)}')" title="${esc(b.t)}">
@@ -591,12 +617,66 @@ function renderRecentStrip(){
     </div>`).join('');
 }
 
-/* ── Book of the Day ── */
+/* ── Book of the Day (weighted) ── */
 function getBookOfDay(){
   const d=new Date(); const seed=d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate();
+  const shelves=loadShelves();
+  const reading=new Set(shelves.reading||[]);
+  const recent=lsGetRecent();
+  const dates=lsGetDates();
+  const weighted=[];
+  for(let i=0;i<ALL.length;i++){
+    const b=ALL[i];
+    let w=1; // base weight
+    if(reading.has(b.id))w=5; // on reading shelf
+    else if(!recent.includes(b.id))w=3; // never viewed
+    else {
+      // in series check — if prev book finished
+      if(b.sr){
+        const allInSeries=ALL.filter(x=>x.sr===b.sr);
+        const idx=allInSeries.findIndex(x=>x.id===b.id);
+        if(idx>0){
+          const prevBook=allInSeries[idx-1];
+          const prevFinished=dates[prevBook.id]?.finished;
+          if(prevFinished)w=4;
+        }
+      }
+      // old unread: weight by position
+      const recIdx=recent.indexOf(b.id);
+      if(recIdx<0)w=2;
+      else w=2-(i/ALL.length);
+    }
+    for(let j=0;j<w;j++)weighted.push(b);
+  }
+  if(!weighted.length)return ALL[0];
   let hash=seed;
   for(let i=0;i<7;i++){hash=(hash*1664525+1013904223)>>>0}
-  return ALL[hash%ALL.length];
+  return weighted[hash%weighted.length];
+}
+function toggleBotdPanel(){
+  const show=lsGet('mcl_show_botd','0')==='1';
+  lsSet('mcl_show_botd',show?'0':'1');
+  _applyBotdState();
+}
+function _applyBotdState(){
+  const show=lsGet('mcl_show_botd','0')==='1';
+  const wrap=document.getElementById('botd-wrap');
+  const btn=document.getElementById('botd-toggle');
+  if(wrap)wrap.style.display=show?'':'none';
+  if(btn)btn.classList.toggle('open',show);
+  if(show)renderBotd();
+}
+function toggleRecentPanel(){
+  const show=lsGet('mcl_show_recent','0')==='1';
+  lsSet('mcl_show_recent',show?'0':'1');
+  _applyRecentState();
+}
+function _applyRecentState(){
+  const show=lsGet('mcl_show_recent','0')==='1';
+  const wrap=document.getElementById('recent-wrap');
+  const btn=document.getElementById('recent-toggle');
+  if(wrap)wrap.style.display=show?'':'none';
+  if(btn)btn.classList.toggle('open',show);
 }
 function renderBotd(){
   const b=getBookOfDay();
@@ -611,18 +691,47 @@ function renderBotd(){
   el.onclick=()=>openModal(b.id);
 }
 
+/* ── Fuzzy search ── */
+function fuzzyMatch(hay, q){
+  if(hay.includes(q)) return 3; // exact phrase
+  const tokens=q.split(/\s+/).filter(Boolean);
+  let score=0;
+  for(const tok of tokens){
+    if(hay.includes(tok)){score+=2;continue;}
+    // allow 1 char off for tokens ≥ 4 chars
+    if(tok.length>=4){
+      let found=false;
+      for(let i=0;i<=hay.length-tok.length+1;i++){
+        let diff=0;
+        for(let j=0;j<tok.length;j++) if(hay[i+j]!==tok[j]) diff++;
+        if(diff<=1){found=true;break;}
+      }
+      if(found){score+=1;continue;}
+    }
+    return 0; // token not found at all
+  }
+  return score;
+}
+
 /* ── Search highlighting ── */
 let _q='';
 function highlight(text){
   if(!_q||!text) return esc(text);
-  const escaped=_q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
-  return esc(text).replace(new RegExp(`(${escaped})`,'gi'),'<mark>$1</mark>');
+  // highlight individual tokens
+  let highlighted=esc(text);
+  const tokens=_q.split(/\s+/).filter(Boolean);
+  for(const tok of tokens){
+    const regex=new RegExp(`(${tok.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`, 'gi');
+    highlighted=highlighted.replace(regex,'<mark>$1</mark>');
+  }
+  return highlighted;
 }
 
 /* ── Filter & sort ── */
 function setFilter(key,val){
-  const map={author:'fAuthor',category:'fCat',format:'fFmt',location:'fLoc',tag:'fTag',series:'fSeries'};
-  const el=document.getElementById(map[key]); if(el){el.value=val;applyF();}
+  const map={author:'author',category:'cat',format:'fmt',location:'loc',tag:'tag',series:'series',shelf:'shelf'};
+  const mfKey=map[key];
+  if(mfKey){mfSetValue(mfKey,val);applyF();}
 }
 function toggleFilters(){
   const body=document.getElementById('filters-body');
@@ -630,35 +739,178 @@ function toggleFilters(){
   const open=body.classList.toggle('open');
   btn.textContent=open?'✕ Hide filters':'⚙ Filters';
 }
+/* ════════════════════════════════════════════════════════════════
+   MULTI-FILTER ENGINE
+   ════════════════════════════════════════════════════════════════ */
+const _mf={author:new Set(),cat:new Set(),fmt:new Set(),loc:new Set(),tag:new Set(),series:new Set(),shelf:new Set()};
+const _mfOpts={};
+const _mfLabels={author:'Author',cat:'Category',fmt:'Format',loc:'Location',tag:'Tag',series:'Series',shelf:'Shelf'};
+let _mfOpenKey=null;
+
+function mfInit(key,selectId){
+  const sel=document.getElementById(selectId);
+  if(!sel)return;
+  if(document.getElementById('mf-wrap-'+key))return;
+  const opts=[...sel.options].filter(o=>o.value).map(o=>({v:o.value,l:o.text}));
+  _mfOpts[key]=opts;
+  const wrap=document.createElement('div');
+  wrap.className='mf-wrap'; wrap.id='mf-wrap-'+key;
+  wrap.innerHTML=`<button class="mf-btn" id="mf-btn-${key}" onclick="mfToggle('${key}')"><span id="mf-label-${key}">${_mfLabels[key]}</span><span class="mf-badge" id="mf-badge-${key}" style="display:none"></span><span class="mf-arrow">&#9662;</span></button>`;
+  sel.parentNode.insertBefore(wrap,sel);
+  sel.style.display='none';
+}
+
+// Shared portal panel attached to <body>
+let _mfPortal=null;
+function _getMfPortal(){
+  if(!_mfPortal){
+    _mfPortal=document.createElement('div');
+    _mfPortal.id='mf-portal';
+    _mfPortal.style.cssText='position:fixed;z-index:9999;background:var(--surface);border:1px solid var(--border);border-radius:10px;box-shadow:0 6px 24px rgba(0,0,0,.18);min-width:220px;max-width:300px;display:none;flex-direction:column;font-size:.82rem;color:var(--text);font-family:inherit';
+    document.body.appendChild(_mfPortal);
+  }
+  return _mfPortal;
+}
+
+function mfToggle(key){
+  const btn=document.getElementById('mf-btn-'+key);
+  if(!btn)return;
+  const portal=_getMfPortal();
+  const isOpen=_mfOpenKey===key&&portal.style.display!=='none';
+  portal.style.display='none'; _mfOpenKey=null;
+  if(isOpen)return;
+  const opts=_mfOpts[key]||[];
+  const selected=_mf[key]||new Set();
+  portal.innerHTML=`
+    <div style="padding:7px 8px;border-bottom:1px solid var(--border)">
+      <input id="mf-portal-search" type="text" placeholder="Search ${_mfLabels[key]}\u2026"
+        style="width:100%;padding:5px 8px;border:1px solid var(--border);border-radius:6px;font-size:.8rem;background:var(--surface2);color:var(--text);box-sizing:border-box;outline:none;display:block"
+        oninput="mfSearch('${key}',this.value)">
+    </div>
+    <div id="mf-opts-${key}" style="max-height:240px;overflow-y:auto;padding:4px 0">
+      ${opts.map(o=>`<label style="display:flex;align-items:center;gap:8px;padding:6px 12px;cursor:pointer" onmouseover="this.style.background='var(--surface2)'" onmouseout="this.style.background=''">
+        <input type="checkbox" value="${esc(o.v)}" ${selected.has(o.v)?'checked':''} onchange="mfChange('${key}',this)" style="width:14px;height:14px;flex-shrink:0;cursor:pointer;accent-color:var(--accent);margin:0">
+        <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${esc(o.l)}">${esc(o.l)}</span>
+      </label>`).join('')}
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:6px 10px;border-top:1px solid var(--border)">
+      <span style="font-size:.7rem;color:var(--text3)" id="mf-cnt-${key}">${selected.size?selected.size+' selected':''}</span>
+      <button onclick="mfClearKey('${key}')" style="font-size:.72rem;color:var(--accent);background:none;border:none;cursor:pointer;padding:0">Clear</button>
+    </div>`;
+  const rect=btn.getBoundingClientRect();
+  portal.style.display='flex';
+  const pw=Math.min(300,window.innerWidth-16);
+  portal.style.minWidth=pw+'px';
+  let left=rect.left;
+  if(left+pw>window.innerWidth-8) left=window.innerWidth-8-pw;
+  if(left<8) left=8;
+  portal.style.left=left+'px';
+  portal.style.top=(rect.bottom+4)+'px';
+  const ph=portal.getBoundingClientRect().height;
+  if(rect.bottom+4+ph>window.innerHeight-8) portal.style.top=(rect.top-4-ph)+'px';
+  _mfOpenKey=key;
+  const si=document.getElementById('mf-portal-search');
+  if(si)si.focus();
+}
+
+document.addEventListener('click',function(e){
+  if(!_mfOpenKey)return;
+  const portal=document.getElementById('mf-portal');
+  if(portal&&!portal.contains(e.target)&&!e.target.closest('.mf-wrap')){
+    portal.style.display='none'; _mfOpenKey=null;
+  }
+});
+
+function mfChange(key,cb){
+  if(cb.checked) _mf[key].add(cb.value);
+  else _mf[key].delete(cb.value);
+  mfUpdateLabel(key);
+  applyF();
+}
+
+function mfClearKey(key){
+  _mf[key].clear();
+  const container=document.getElementById('mf-opts-'+key);
+  if(container)container.querySelectorAll('input[type=checkbox]').forEach(cb=>cb.checked=false);
+  mfUpdateLabel(key); applyF();
+}
+
+function mfUpdateLabel(key){
+  const n=_mf[key].size;
+  const badge=document.getElementById('mf-badge-'+key);
+  const btn=document.getElementById('mf-btn-'+key);
+  if(badge){badge.textContent=n;badge.style.display=n?'':'none';}
+  if(btn){btn.classList.toggle('active',n>0);}
+  const cnt=document.getElementById('mf-cnt-'+key);
+  if(cnt)cnt.textContent=n?n+' selected':'';
+}
+
+function mfSearch(key,q){
+  const container=document.getElementById('mf-opts-'+key);
+  if(!container)return;
+  const labels=container.querySelectorAll('label');
+  const lq=q.toLowerCase();
+  labels.forEach(el=>{
+    const cb=el.querySelector('input[type=checkbox]');
+    const val=cb?cb.value.toLowerCase():'';
+    el.style.display=(!lq||val.includes(lq))?'':'none';
+  });
+}
+
+function mfSetValue(key,val){
+  mfClearKey(key);
+  if(!val)return;
+  _mf[key].add(val);
+  const cb=document.querySelector(\`#mf-opts-\${key} input[value="\${CSS.escape(val)}"]\`);
+  if(cb)cb.checked=true;
+  mfUpdateLabel(key);
+}
+
+let _mfInitted=false;
+function mfInitAll(){
+  if(_mfInitted)return; _mfInitted=true;
+  mfInit('author','fAuthor');
+  mfInit('cat','fCat');
+  mfInit('fmt','fFmt');
+  mfInit('loc','fLoc');
+  mfInit('tag','fTag');
+  mfInit('series','fSeries');
+  mfInit('shelf','fShelf');
+  const cat2=document.getElementById('fCat2'); if(cat2)cat2.remove();
+}
+
 function applyF(){
   _q=document.getElementById('q').value.toLowerCase().trim();
-  const au=document.getElementById('fAuthor').value;
-  const cat=document.getElementById('fCat').value;
-  const fmt=document.getElementById('fFmt').value;
-  const loc=document.getElementById('fLoc').value;
-  const tag=document.getElementById('fTag').value;
   const sort=document.getElementById('fSort').value;
   const minP=parseInt(document.getElementById('fMinP').value)||0;
   const maxP=parseInt(document.getElementById('fMaxP').value)||Infinity;
   const minR=parseInt(document.getElementById('fMinR').value)||0;
-  const ser=document.getElementById('fSeries').value;
   const ratings=lsGetRatings();
-  filtered=ALL.filter(b=>{
+  const shelves=loadShelves();
+  const fuzzyResults=[];
+  filtered=ALL.filter((b,idx)=>{
     if(_q){
       const hay=[b.t,b.a,b.s,...(b.tg||[])].join(' ').toLowerCase();
-      if(!hay.includes(_q))return false;
+      const score=fuzzyMatch(hay,_q);
+      if(score<=0)return false;
+      fuzzyResults.push({b,score,idx});
     }
-    if(au&&b.a!==au)return false;
-    if(cat&&b.c!==cat)return false;
-    if(fmt&&b.f!==fmt)return false;
-    if(loc&&b.l!==loc)return false;
-    if(tag&&!(b.tg||[]).includes(tag))return false;
-    if(ser&&b.sr!==ser)return false;
+    if(_mf.author.size&&!_mf.author.has(b.a))return false;
+    if(_mf.cat.size&&!_mf.cat.has(b.c))return false;
+    if(_mf.fmt.size&&!_mf.fmt.has(b.f))return false;
+    if(_mf.loc.size&&!_mf.loc.has(b.l))return false;
+    if(_mf.tag.size&&![..._mf.tag].some(t=>(b.tg||[]).includes(t)))return false;
+    if(_mf.series.size&&!_mf.series.has(b.sr))return false;
+    if(_mf.shelf.size&&![..._mf.shelf].some(sid=>(shelves[sid]||[]).includes(b.id)))return false;
     if(minP&&(b.p||0)<minP)return false;
     if(maxP<Infinity&&(b.p||0)>maxP)return false;
     if(minR&&(ratings[b.id]||0)<minR)return false;
     return true;
   });
+  if(_q&&fuzzyResults.length){
+    fuzzyResults.sort((a,b)=>b.score-a.score||a.idx-b.idx);
+    filtered=fuzzyResults.map(x=>x.b);
+  }
   if(sort==='title_az')filtered.sort((a,b)=>a.t.localeCompare(b.t));
   else if(sort==='title_za')filtered.sort((a,b)=>b.t.localeCompare(a.t));
   else if(sort==='author_az')filtered.sort((a,b)=>a.a.localeCompare(b.a));
@@ -670,8 +922,9 @@ function applyF(){
 }
 function clearF(){
   document.getElementById('q').value='';
-  ['fAuthor','fCat','fFmt','fLoc','fTag','fSort','fSeries','fMinR'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
-  ['fMinP','fMaxP'].forEach(id=>document.getElementById(id).value='');
+  Object.keys(_mf).forEach(k=>mfClearKey(k));
+  ['fSort','fMinR'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  ['fMinP','fMaxP'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
   applyF();
 }
 function surpriseMe(){ if(!filtered.length)return; openModal(filtered[Math.floor(Math.random()*filtered.length)].id); }
@@ -691,13 +944,13 @@ function cardHTML(b){
   const cardEl=`<div class="card" tabindex="0" id="card-${esc(b.id)}" onclick="if(_bulkMode){toggleBulkSelect('${esc(b.id)}',this)}else{openModal('${esc(b.id)}')}" onkeydown="if(event.key==='Enter'&&!_bulkMode)openModal('${esc(b.id)}')" data-book-id="${esc(b.id)}">
     <input type="checkbox" class="card-checkbox" onclick="event.stopPropagation();toggleBulkSelect('${esc(b.id)}',this.closest('.card'))">
     <div class="swipe-hint swipe-hint-shelf">\uD83D\uDCDA Added!</div>
-    <div class="swipe-hint swipe-hint-rate">\u2B50 Rated!</div>
     ${corners?`<div class="card-corner-badges">${corners}</div>`:''}
     ${imgEl(b.img,b.t)}
     <div class="card-body">
       <div class="card-title">${highlight(b.t)}</div>
       <div class="card-author" onclick="event.stopPropagation();openAuthorModal('${esc(b.a)}')">${highlight(b.a)}</div>
       <div class="badges">
+        ${b.ext?`<span class="badge" style="background:#fef3c7;color:#92400e;font-size:.55rem" title="External book (not in library)">📝</span>`:''}
         ${b.f?`<span class="badge badge-format" onclick="event.stopPropagation();setFilter('format','${esc(b.f)}')">${esc(b.f)}</span>`:''}
         ${b.c?`<span class="badge badge-category" onclick="event.stopPropagation();setFilter('category','${esc(b.c)}')">${esc(b.c)}</span>`:''}
         ${b.l?`<span class="badge badge-location" onclick="event.stopPropagation();setFilter('location','${esc(b.l)}')">${esc(b.l)}</span>`:''}
@@ -800,13 +1053,78 @@ function exportCSVFallback(){
 
 /* ── Print view ── */
 function printList(){
-  window.print();
+  // If in shelf view, print that shelf; otherwise print filtered list
+  if(_shelfView){
+    const shelves=loadShelves();
+    const ids=(shelves[_shelfView]||[]);
+    const bks=ids.map(id=>bookMap[id]).filter(Boolean);
+    const allShelves=getAllShelves();
+    const def=allShelves.find(d=>d.id===_shelfView);
+    printShelf(_shelfView, def, bks);
+  } else {
+    window.print();
+  }
+}
+function printShelf(shelfId, shelfDef, books){
+  const ratings=lsGetRatings();
+  const notes=lsGetNotes();
+  const rows=books.map((b,idx)=>`
+    <tr>
+      <td style="padding:8px;border-bottom:1px solid #ddd;text-align:center;width:40px">${idx+1}</td>
+      <td style="padding:8px;border-bottom:1px solid #ddd;text-align:center;width:60px">
+        ${b.img?`<img src="${esc(b.img)}" style="width:50px;height:auto;border-radius:3px" onerror="this.style.display='none'">`:''}
+      </td>
+      <td style="padding:8px;border-bottom:1px solid #ddd"><strong>${esc(b.t)}</strong></td>
+      <td style="padding:8px;border-bottom:1px solid #ddd">${esc(b.a)}</td>
+      <td style="padding:8px;border-bottom:1px solid #ddd">${esc(b.c||'')}</td>
+      <td style="padding:8px;border-bottom:1px solid #ddd;text-align:center">${[1,2,3,4,5].map(n=>`<span style="color:#f59e0b">${n<=(ratings[b.id]||0)?'★':'☆'}</span>`).join('')}</td>
+      <td style="padding:8px;border-bottom:1px solid #ddd;font-size:.9em;color:#666">${esc((notes[b.id]||'').slice(0,100))}</td>
+    </tr>
+  `).join('');
+  const html=`<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>${shelfDef.label} - Print List</title>
+<style>
+  body{font-family:Georgia,serif;background:#fff;color:#222;margin:20px;line-height:1.5}
+  h1{font-size:2em;margin-bottom:10px;border-bottom:2px solid #333;padding-bottom:10px}
+  .subtitle{color:#666;font-size:.95em;margin-bottom:20px}
+  table{width:100%;border-collapse:collapse;margin-top:20px}
+  th{background:#f5f5f5;padding:10px;text-align:left;font-weight:600;border-bottom:2px solid #ccc}
+  td{padding:8px;border-bottom:1px solid #ddd;vertical-align:top}
+  @media print{body{margin:0;font-size:11pt}h1{font-size:1.5em;margin-bottom:8px}table{font-size:10pt}td{padding:6px}}
+</style>
+</head>
+<body>
+<h1>${shelfDef.icon} ${shelfDef.label}</h1>
+<div class="subtitle">Printed ${new Date().toLocaleDateString()} • ${books.length} book${books.length!==1?'s':''}</div>
+<table>
+  <thead>
+    <tr>
+      <th style="width:40px">#</th>
+      <th style="width:60px">Cover</th>
+      <th>Title</th>
+      <th>Author</th>
+      <th>Category</th>
+      <th style="text-align:center">Rating</th>
+      <th>Notes</th>
+    </tr>
+  </thead>
+  <tbody>${rows}</tbody>
+</table>
+</body>
+</html>`;
+  const win=window.open('','','width=900,height=700');
+  win.document.write(html);
+  win.document.close();
+  setTimeout(()=>win.print(),500);
 }
 
 /* ── URL sync ── */
 function syncURL(){
   const params=new URLSearchParams();
-  const map={q:'q',author:'fAuthor',cat:'fCat',fmt:'fFmt',loc:'fLoc',tag:'fTag',sort:'fSort',ser:'fSeries',minp:'fMinP',maxp:'fMaxP',minr:'fMinR'};
+  const map={q:'q',author:'fAuthor',cat:'fCat',cat2:'fCat2',fmt:'fFmt',loc:'fLoc',tag:'fTag',sort:'fSort',ser:'fSeries',minp:'fMinP',maxp:'fMaxP',minr:'fMinR',shelf:'fShelf'};
   Object.entries(map).forEach(([k,id])=>{const el=document.getElementById(id);if(el&&el.value)params.set(k,el.value);});
   const imp=new URLSearchParams(location.search).get('import');
   if(imp)params.set('import',imp);
@@ -815,7 +1133,7 @@ function syncURL(){
 }
 function loadFromURL(){
   const p=new URLSearchParams(location.search);
-  const map={q:'q',author:'fAuthor',cat:'fCat',fmt:'fFmt',loc:'fLoc',tag:'fTag',sort:'fSort',ser:'fSeries',minp:'fMinP',maxp:'fMaxP',minr:'fMinR'};
+  const map={q:'q',author:'fAuthor',cat:'fCat',cat2:'fCat2',fmt:'fFmt',loc:'fLoc',tag:'fTag',sort:'fSort',ser:'fSeries',minp:'fMinP',maxp:'fMaxP',minr:'fMinR',shelf:'fShelf'};
   Object.entries(map).forEach(([k,id])=>{const el=document.getElementById(id);if(el&&p.get(k))el.value=p.get(k);});
 }
 
@@ -925,6 +1243,7 @@ function openModal(id){
       </div>
     </div>
 
+    ${b.ext?`<div class="ext-book-banner">📝 <span><strong>Not in your library</strong> — tracked externally &nbsp;·&nbsp; <a href="#" onclick="event.preventDefault();_closeModal();setTimeout(()=>openExternalModal('${esc(id)}'),60)" style="color:#92400e;text-decoration:underline">Edit</a> &nbsp;·&nbsp; <a href="#" onclick="event.preventDefault();deleteExternalBook('${esc(id)}')" style="color:#ef4444;text-decoration:underline">Delete</a></span></div>`:''}
     <div class="modal-shelf-row">${shelfBtns}</div>
     ${progressHTML}
 
@@ -1079,6 +1398,7 @@ function closeAuthorModal(e){
 const SHELF_DEFS=[
   {id:'want',   icon:'🔖', label:'Want to Read'},
   {id:'reading',icon:'📖', label:'Reading Now'},
+  {id:'upnext', icon:'📋', label:'Up Next'},
   {id:'done',   icon:'✅', label:'Finished'},
   {id:'fave',   icon:'⭐', label:'Favorites'},
 ];
@@ -1114,7 +1434,14 @@ function renderShelvesModal(){
   if(_shelfView){
     const def=allShelves.find(d=>d.id===_shelfView);
     const ids=(s[_shelfView]||[]);
-    const bks=ids.map(id=>bookMap[id]).filter(Boolean);
+    let bks=ids.map(id=>bookMap[id]).filter(Boolean);
+    // For Up Next shelf, reorder by mcl_upnext_order
+    if(_shelfView==='upnext'){
+      const order=getUpNextOrder();
+      const ordered=order.map(id=>bookMap[id]).filter(Boolean);
+      const unordered=bks.filter(b=>!order.includes(b.id));
+      bks=[...ordered,...unordered];
+    }
     // Reading progress list for "reading" shelf
     const extra=_shelfView==='reading'?bks.map(b=>{
       const pct=lsGetProgress()[b.id]||0;
@@ -1125,11 +1452,14 @@ function renderShelvesModal(){
             oninput="saveProgress('${esc(b.id)}',this.value)">%
         </div></div>`;
     }).join(''):'';
+    const cardClassName=_shelfView==='upnext'?' upnext-card':'';
     inner.innerHTML=`<h2 style="font-size:.96rem;font-weight:700;margin-bottom:10px">${def.icon} ${def.label} (${ids.length})</h2>
       ${importBanner}
       <button class="btn-sm" onclick="_shelfView=null;renderShelvesModal()" style="margin-bottom:10px">← Back</button>
+      ${_shelfView==='upnext'?`<p style="color:var(--text2);font-size:.8rem;margin-bottom:8px">Drag to reorder →</p>`:''}
       ${extra?`<div class="modal-section" style="padding-top:0">${extra}</div>`:''}
-      ${bks.length?`${generateShareRow(_shelfView,ids)}<div class="mini-grid">${bks.map(b=>shelfMiniCard(b,def.id)).join('')}</div>`:'<p style="color:var(--text2);font-size:.86rem;padding:8px 0">No books on this shelf yet.</p>'}`;
+      ${bks.length?`${generateShareRow(_shelfView,ids)}<div class="mini-grid">${bks.map(b=>`<div class="shelf-mini-wrap${cardClassName}" data-book-id="${b.id}" onclick="closeShelves();setTimeout(()=>openModal('${esc(b.id)}'),40)" style="cursor:pointer">${miniImgEl(b.img,b.t)}<div class="mini-title">${esc(b.t)}</div><div class="mini-author">${esc(b.a)}</div><button class="shelf-mini-remove" onclick="event.stopPropagation();toggleShelf('${def.id}','${esc(b.id)}');renderShelvesModal()" title="Remove">✕</button></div>`).join('')}</div>`:'<p style="color:var(--text2);font-size:.86rem;padding:8px 0">No books on this shelf yet.</p>'}`;
+    if(_shelfView==='upnext')setTimeout(setupUpNextDrag,50);
   } else {
     // Overview
     const rows=allShelves.map(def=>{
@@ -1146,6 +1476,7 @@ function renderShelvesModal(){
     inner.innerHTML=`<h2 style="font-size:.96rem;font-weight:700;margin-bottom:10px">📚 My Shelves</h2>
       ${importBanner}${rows}
       <div class="modal-section">
+        <button class="btn-sm" onclick="openExternalModal()" style="margin-bottom:12px;width:100%">➕ Track a Book</button>
         <div class="modal-section-title">+ New Shelf</div>
         <div class="icon-options">${iconOpts}</div>
         <div class="new-shelf-row">
@@ -1193,6 +1524,132 @@ function importShelf(shelfId,bookIds){
   const s=loadShelves(); if(!s[shelfId])s[shelfId]=[];
   bookIds.forEach(id=>{if(!s[shelfId].includes(id))s[shelfId].push(id);});
   saveShelves(s); _shelfView=shelfId; renderShelvesModal();
+}
+
+/* ════════════════════════════════════════════════════════════════
+   UP NEXT SHELF – Drag-to-reorder
+   ═══════════════════════════════════════════════════════════════ */
+function getUpNextOrder(){ return lsGet('mcl_upnext_order',[]) }
+function saveUpNextOrder(ord){ lsSet('mcl_upnext_order',ord); triggerSync(); }
+let _draggedId=null;
+function setupUpNextDrag(){
+  document.querySelectorAll('.upnext-card').forEach(card=>{
+    card.draggable=true;
+    card.ondragstart=(e)=>{_draggedId=card.dataset.bookId;e.dataTransfer.effectAllowed='move';};
+    card.ondragover=(e)=>{e.preventDefault();e.dataTransfer.dropEffect='move';};
+    card.ondrop=(e)=>{
+      e.preventDefault();
+      if(!_draggedId||_draggedId===card.dataset.bookId)return;
+      const order=getUpNextOrder();
+      const dragIdx=order.indexOf(_draggedId);
+      const dropIdx=order.indexOf(card.dataset.bookId);
+      if(dragIdx>=0&&dropIdx>=0){
+        order.splice(dragIdx,1);
+        order.splice(dropIdx,0,_draggedId);
+        saveUpNextOrder(order);
+        renderShelvesModal();
+      }
+      _draggedId=null;
+    };
+    card.ondragend=()=>{_draggedId=null;};
+  });
+}
+
+/* ════════════════════════════════════════════════════════════════
+   EXTERNAL BOOKS (tracker for books not in library)
+   ═══════════════════════════════════════════════════════════════ */
+function lsGetExternalBooks(){ return lsGet('mcl_external_books',[]) }
+function lsSetExternalBooks(books){ lsSet('mcl_external_books',books); triggerSync(); }
+function mergeExternalBooks(){
+  const ext=lsGetExternalBooks();
+  ext.forEach(b=>{if(!bookMap[b.id]){ALL.push(b);bookMap[b.id]=b;}});
+}
+
+function _extShelfChips(){
+  const allShelves=[...SHELF_DEFS,...getCustomShelves()];
+  const wrap=document.getElementById('ext-shelf-picks'); if(!wrap)return;
+  const editId=document.getElementById('ext-editing-id').value;
+  const shelves=loadShelves();
+  wrap.innerHTML=allShelves.map(def=>{
+    const on=editId&&(shelves[def.id]||[]).includes(editId);
+    return`<span class="ext-shelf-chip${on?' on':''}" data-shelf-id="${def.id}" onclick="this.classList.toggle('on')">${def.icon} ${def.label}</span>`;
+  }).join('');
+}
+
+function openExternalModal(editId){
+  const modal=document.getElementById('ext-overlay');
+  const idField=document.getElementById('ext-editing-id');
+  document.getElementById('ext-modal-title').textContent=editId?'\u270f\ufe0f Edit Tracked Book':'\u2795 Track a Book';
+  document.getElementById('ext-save-btn').textContent=editId?'Save Changes':'Save & Track';
+  idField.value=editId||'';
+  if(editId){
+    const b=bookMap[editId]||{};
+    const dates=lsGetDates()[editId]||{};
+    document.getElementById('ext-title').value=b.t||'';
+    document.getElementById('ext-author').value=b.a||'';
+    document.getElementById('ext-pages').value=b.p||'';
+    document.getElementById('ext-cat').value=b.c||'';
+    document.getElementById('ext-img').value=b.img||'';
+    document.getElementById('ext-started').value=dates.started||'';
+    document.getElementById('ext-finished').value=dates.finished||'';
+  } else {
+    ['ext-title','ext-author','ext-pages','ext-cat','ext-img','ext-started','ext-finished'].forEach(id=>{ const el=document.getElementById(id); if(el)el.value=''; });
+  }
+  modal.classList.add('open'); document.body.style.overflow='hidden';
+  _extShelfChips();
+}
+
+function closeExternalModal(e){
+  if(e&&e.type==='click'&&e.target!==document.getElementById('ext-overlay')&&!e.target.classList.contains('modal-close'))return;
+  document.getElementById('ext-overlay').classList.remove('open'); document.body.style.overflow='';
+}
+
+function saveExternalBook(){
+  const t=document.getElementById('ext-title').value.trim();
+  if(!t){document.getElementById('ext-title').focus();return;}
+  const editId=document.getElementById('ext-editing-id').value;
+  const id=editId||('ext-'+Date.now());
+  const b={id,t,a:document.getElementById('ext-author').value.trim()||'Unknown',
+    p:parseInt(document.getElementById('ext-pages').value)||0,
+    c:document.getElementById('ext-cat').value.trim()||'',
+    img:document.getElementById('ext-img').value.trim()||'',ext:true};
+  const ext=lsGetExternalBooks().filter(x=>x.id!==id);
+  ext.push(b); lsSetExternalBooks(ext);
+  if(!bookMap[id]){ALL.push(b);} else {Object.assign(bookMap[id],b);}
+  bookMap[id]=b;
+  const started=document.getElementById('ext-started').value;
+  const finished=document.getElementById('ext-finished').value;
+  if(started||finished){
+    const dates=lsGetDates(); if(!dates[id])dates[id]={};
+    if(started)dates[id].started=started; if(finished)dates[id].finished=finished;
+    lsSet('mcl_dates',dates); triggerSync();
+  }
+  const chips=document.querySelectorAll('#ext-shelf-picks .ext-shelf-chip');
+  const shelves=loadShelves();
+  chips.forEach(chip=>{
+    const sid=chip.dataset.shelfId; if(!shelves[sid])shelves[sid]=[];
+    const idx=shelves[sid].indexOf(id);
+    if(chip.classList.contains('on')&&idx<0) shelves[sid].push(id);
+    else if(!chip.classList.contains('on')&&idx>=0) shelves[sid].splice(idx,1);
+  });
+  saveShelves(shelves);
+  document.getElementById('ext-overlay').classList.remove('open'); document.body.style.overflow='';
+  applyF();
+}
+
+function deleteExternalBook(id){
+  if(!confirm('Remove this tracked book? This will also delete its ratings, notes, and reading dates.'))return;
+  lsSetExternalBooks(lsGetExternalBooks().filter(b=>b.id!==id));
+  const idx=ALL.findIndex(b=>b.id===id); if(idx>=0)ALL.splice(idx,1);
+  delete bookMap[id];
+  const shelves=loadShelves();
+  Object.keys(shelves).forEach(k=>{ shelves[k]=(shelves[k]||[]).filter(x=>x!==id); });
+  saveShelves(shelves);
+  const ratings=lsGetRatings(); delete ratings[id]; lsSet('mcl_ratings',ratings);
+  const notes=lsGetNotes(); delete notes[id]; lsSet('mcl_notes',notes);
+  const dates=lsGetDates(); delete dates[id]; lsSet('mcl_dates',dates);
+  triggerSync();
+  _closeModal(); applyF();
 }
 
 /* ════════════════════════════════════════════════════════════════
@@ -1272,8 +1729,8 @@ function renderStatsModal(){
    ═══════════════════════════════════════════════════════════════ */
 const GIST_FILE  = 'mclemore-library-data.json';
 const DATA_KEYS  = ['mcl_ratings','mcl_notes','mcl_shelves','mcl_custom_shelves',
-                    'mcl_progress','mcl_dates','mcl_loans','mcl_recent','mcl_sessions'];
-const ARRAY_KEYS = new Set(['mcl_custom_shelves','mcl_recent','mcl_sessions']);
+                    'mcl_progress','mcl_dates','mcl_loans','mcl_recent','mcl_sessions','mcl_external_books','mcl_upnext_order'];
+const ARRAY_KEYS = new Set(['mcl_custom_shelves','mcl_recent','mcl_sessions','mcl_external_books','mcl_upnext_order']);
 
 let _ghToken  = localStorage.getItem('mcl_gh_token')||'';
 let _gistId   = localStorage.getItem('mcl_gist_id')||'';
@@ -1309,7 +1766,26 @@ async function gistLoad(){
     const raw=gist.files?.[GIST_FILE]?.content;
     if(raw){
       const remote=JSON.parse(raw);
-      DATA_KEYS.forEach(k=>{if(remote[k]!==undefined){try{localStorage.setItem(k,JSON.stringify(remote[k]));}catch{}}});
+      DATA_KEYS.forEach(k=>{
+        if(remote[k]!==undefined){
+          try{
+            if(k==='mcl_custom_shelves'){
+              // Merge: keep any local custom shelves not present in remote (by id)
+              const local=lsGet('mcl_custom_shelves',[]);
+              const remoteIds=new Set((remote[k]||[]).map(function(s){return s.id;}));
+              const merged=[...(remote[k]||[]),...local.filter(function(s){return!remoteIds.has(s.id);})];
+              localStorage.setItem(k,JSON.stringify(merged));
+            } else if(k==='mcl_shelves'){
+              // Merge: for any shelf key present locally but missing from remote, keep local data
+              const local=lsGet('mcl_shelves',{});
+              const merged=Object.assign({},local,remote[k]);
+              localStorage.setItem(k,JSON.stringify(merged));
+            } else {
+              localStorage.setItem(k,JSON.stringify(remote[k]));
+            }
+          }catch{}
+        }
+      });
       console.log('[Gist] Personal data loaded from Gist');
     }
     setSyncState('synced');
@@ -1814,16 +2290,9 @@ function addSwipeToCard(el,bookId){
   el.addEventListener('touchend',function(e){
     var dx=e.changedTouches[0].clientX-startX;
     var dy=Math.abs(e.changedTouches[0].clientY-startY);
-    if(Math.abs(dx)<THRESHOLD||dy>Math.abs(dx)*0.8)return;
-    if(dx>0){
-      var shelves=getAllShelves();
-      if(shelves.length>0){addToShelf(bookId,shelves[0].id);flashSwipeHint(el,'shelf');}
-    }else{
-      var cur=lsGetRatings()[bookId]||0;
-      var next=(cur%5)+1;
-      setRating(bookId,next);
-      flashSwipeHint(el,'rate');
-    }
+    if(dx<THRESHOLD||dy>Math.abs(dx)*0.8)return;
+    var shelves=getAllShelves();
+    if(shelves.length>0){addToShelf(bookId,shelves[0].id);flashSwipeHint(el,'shelf');}
   },{passive:true});
 }
 function flashSwipeHint(el,type){
@@ -1888,8 +2357,13 @@ function bulkAddToShelf(){
   var sel=document.getElementById('bulk-shelf-sel');
   if(!sel||!sel.value){alert('Choose a shelf first.');return;}
   var shelfId=sel.value;
-  _bulkSelected.forEach(function(id){addToShelf(id,shelfId);});
-  alert('Added '+_bulkSelected.size+' book'+(_bulkSelected.size!==1?'s':'')+' to shelf!');
+  var s=loadShelves(); if(!s[shelfId])s[shelfId]=[];
+  var added=0;
+  _bulkSelected.forEach(function(id){
+    if(!s[shelfId].includes(id)){s[shelfId].push(id);added++;}
+  });
+  saveShelves(s);
+  alert('Added '+added+' book'+(added!==1?'s':'')+' to shelf!');
   toggleBulkMode(); renderPage();
 }
 function bulkRate(){
@@ -1904,8 +2378,20 @@ function initBulkBar(){
   var shelfSel=document.getElementById('bulk-shelf-sel');
   if(shelfSel){
     var all=getAllShelves();
-    shelfSel.innerHTML='<option value="">Shelf\u2026</option>'+all.map(function(s){return'<option value="'+esc(s.id)+'">'+(s.icon||'')+' '+esc(s.name)+'</option>';}).join('');
+    shelfSel.innerHTML='<option value="">Shelf\u2026</option>'+all.map(function(s){return'<option value="'+esc(s.id)+'">'+(s.icon||'')+' '+esc(s.label||s.name||s.id)+'</option>';}).join('');
   }
+}
+
+/* ── Populate shelf filter ── */
+function populateShelfFilter(){
+  const sel=document.getElementById('fShelf');
+  if(!sel)return;
+  const shelves=getAllShelves();
+  sel.innerHTML='<option value="">All Shelves</option>'+shelves.map(d=>`<option value="${d.id}">${d.icon} ${d.label}</option>`).join('');
+  const existing=document.getElementById('mf-wrap-shelf');
+  if(existing)existing.remove();
+  mfInit('shelf','fShelf');
+  mfUpdateLabel('shelf');
 }
 
 /* ── Init ── */
@@ -1913,10 +2399,13 @@ function checkOnLoad(){
   const data=getImportData(); if(data)window.importData=data;
 }
 initDark(); initView(); loadFromURL(); checkOnLoad();
-renderBotd(); renderRecentStrip();
+mergeExternalBooks();
+populateShelfFilter();
+mfInitAll();
+_applyBotdState(); renderRecentStrip();
 initGoalRing(); initTimerFAB(); initBulkBar(); installPWA();
 // Load Gist data first, then render (async — will re-render if data changes)
-if(_ghToken){ gistLoad().then(function(){ applyF(); renderRecentStrip(); initGoalRing(); }); } else { applyF(); }
+if(_ghToken){ gistLoad().then(function(){ mergeExternalBooks(); applyF(); renderRecentStrip(); initGoalRing(); }); } else { applyF(); }
 """
 print("JS done")
 
@@ -1961,7 +2450,10 @@ html = f"""<!DOCTYPE html>
   <div class="subtitle">· {total:,} titles · Built {built} ·</div>
 
   <!-- Book of the Day -->
-  <div class="botd-bar" id="botd-bar"></div>
+  <button class="botd-toggle" id="botd-toggle" onclick="toggleBotdPanel()">
+    <span class="toggle-arrow">›</span><span>📅 Book of the Day</span>
+  </button>
+  <div id="botd-wrap" style="display:none"><div class="botd-bar" id="botd-bar"></div></div>
 
   <button class="filters-toggle" onclick="toggleFilters()">⚙ Filters</button>
   <div class="filters-body" id="filters-body">
@@ -1969,8 +2461,10 @@ html = f"""<!DOCTYPE html>
       <input type="text" id="q" placeholder="Search title, author, summary, tags…" oninput="applyF()">
       <select id="fAuthor" onchange="applyF()"><option value="">All Authors</option>{author_opts}</select>
       <select id="fCat"    onchange="applyF()"><option value="">All Categories</option>{cat_opts}</select>
+      <select id="fCat2"   onchange="applyF()"><option value="">+ Category 2</option>{cat_opts}</select>
       <select id="fFmt"    onchange="applyF()"><option value="">All Formats</option>{fmt_opts}</select>
       <select id="fLoc"    onchange="applyF()"><option value="">All Locations</option>{loc_opts}</select>
+      <select id="fShelf"  onchange="applyF()"><option value="">All Shelves</option></select>
     </div>
     <div class="filter-row">
       <select id="fTag"    onchange="applyF()"><option value="">All Tags</option>{tag_opts}</select>
@@ -2024,7 +2518,12 @@ html = f"""<!DOCTYPE html>
 </div>
 
 <!-- Recently viewed strip -->
-<div class="recent-strip" id="recent-strip" style="display:none"></div>
+<button class="recent-toggle" id="recent-toggle" onclick="toggleRecentPanel()" style="display:none">
+  <span class="toggle-arrow">›</span><span>🕐 Recently Viewed</span>
+</button>
+<div id="recent-wrap" style="display:none">
+  <div class="recent-strip" id="recent-strip"></div>
+</div>
 
 <div class="grid-wrap" id="grid-wrap">
   <div class="book-grid" id="book-grid"></div>
@@ -2095,6 +2594,55 @@ html = f"""<!DOCTYPE html>
   </div>
 </div>
 
+<!-- External book tracker modal -->
+<div id="ext-overlay" class="modal-overlay" onclick="closeExternalModal(event)">
+  <div class="modal" style="max-width:440px;max-height:90vh;overflow-y:auto">
+    <button class="modal-close" onclick="closeExternalModal()">✕</button>
+    <h2 id="ext-modal-title" style="font-size:.95rem;font-weight:700;margin-bottom:4px">➕ Track a Book</h2>
+    <p style="font-size:.75rem;color:var(--text2);margin-bottom:14px">Books tracked here won't appear in your Google Sheet library — they're stored locally and synced to your Gist.</p>
+    <input type="hidden" id="ext-editing-id">
+    <div style="display:flex;flex-direction:column;gap:11px">
+      <div>
+        <label class="ext-lbl">Title *</label>
+        <input type="text" id="ext-title" placeholder="Book title…" class="ext-inp">
+      </div>
+      <div>
+        <label class="ext-lbl">Author</label>
+        <input type="text" id="ext-author" placeholder="Author name…" class="ext-inp">
+      </div>
+      <div style="display:flex;gap:8px">
+        <div style="flex:1">
+          <label class="ext-lbl">Pages</label>
+          <input type="number" id="ext-pages" placeholder="Pages…" class="ext-inp">
+        </div>
+        <div style="flex:1">
+          <label class="ext-lbl">Category</label>
+          <input type="text" id="ext-cat" placeholder="e.g. Fiction…" class="ext-inp">
+        </div>
+      </div>
+      <div>
+        <label class="ext-lbl">Cover URL (optional)</label>
+        <input type="text" id="ext-img" placeholder="https://…" class="ext-inp">
+      </div>
+      <div style="display:flex;gap:8px">
+        <div style="flex:1">
+          <label class="ext-lbl">Date Started</label>
+          <input type="date" id="ext-started" class="ext-inp">
+        </div>
+        <div style="flex:1">
+          <label class="ext-lbl">Date Finished</label>
+          <input type="date" id="ext-finished" class="ext-inp">
+        </div>
+      </div>
+      <div>
+        <label class="ext-lbl">Add to Shelf</label>
+        <div id="ext-shelf-picks" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px"></div>
+      </div>
+      <button class="btn-accent" id="ext-save-btn" onclick="saveExternalBook()" style="padding:10px;margin-top:4px">Save & Track</button>
+    </div>
+  </div>
+</div>
+
 <!-- Reading session timer FAB -->
 <button class="timer-btn" id="timer-fab" title="Reading session timer">⏱</button>
 <div class="timer-popup" id="timer-popup">
@@ -2118,12 +2666,12 @@ html = f"""<!DOCTYPE html>
 </html>"""
 
 # ── Write & push ──────────────────────────────────────────────────────────────
-out = '/sessions/fervent-nifty-darwin/mnt/outputs/McLemore-Library.html'
+out = '/sessions/lucid-dreamy-meitner/mnt/outputs/McLemore-Library.html'
 with open(out, 'w') as f:
     f.write(html)
 print(f"HTML written: {len(html.encode())//1024} KB")
 
-repo = '/sessions/fervent-nifty-darwin/McLemore-Library-work'
+repo = '/sessions/lucid-dreamy-meitner/McLemore-Library-work'
 shutil.copy(out, os.path.join(repo, 'index.html'))
 subprocess.run(['git','config','http.postBuffer','524288000'], cwd=repo, capture_output=True)
 subprocess.run(['git','add','index.html'], cwd=repo, capture_output=True)
