@@ -1597,7 +1597,10 @@ function lsGetExternalBooks(){ return lsGet('mcl_external_books',[]) }
 function lsSetExternalBooks(books){ lsSet('mcl_external_books',books); triggerSync(); }
 function mergeExternalBooks(){
   const ext=lsGetExternalBooks();
-  ext.forEach(b=>{if(!bookMap[b.id]){ALL.push(b);bookMap[b.id]=b;}});
+  ext.forEach(b=>{
+    if(!bookMap[b.id]){ALL.push(b);bookMap[b.id]=b;}
+    else{Object.assign(bookMap[b.id],b);}  // update existing entry with latest edits
+  });
 }
 
 function _extShelfChips(){
@@ -1867,6 +1870,12 @@ async function gistLoad(){
               const local=lsGet('mcl_custom_shelves',[]);
               const remoteIds=new Set((remote[k]||[]).map(function(s){return s.id;}));
               const merged=[...(remote[k]||[]),...local.filter(function(s){return!remoteIds.has(s.id);})];
+              localStorage.setItem(k,JSON.stringify(merged));
+            } else if(k==='mcl_external_books'){
+              // Merge: remote wins for any shared IDs (edits propagate); keep local-only additions
+              const local=lsGet('mcl_external_books',[]);
+              const remoteIds=new Set((remote[k]||[]).map(function(b){return b.id;}));
+              const merged=[...(remote[k]||[]),...local.filter(function(b){return!remoteIds.has(b.id);})];
               localStorage.setItem(k,JSON.stringify(merged));
             } else if(k==='mcl_shelves'){
               // Merge: for any shelf key present locally but missing from remote, keep local data
