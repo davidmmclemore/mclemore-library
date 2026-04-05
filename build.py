@@ -253,6 +253,7 @@ body.dark mark{background:#78350f;color:#fde68a}
 
 /* ── Modal ── */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:200;align-items:center;justify-content:center;padding:16px}
+#modal-overlay{z-index:300}
 .modal-overlay.open{display:flex}
 .modal{background:var(--surface);border-radius:14px;max-width:740px;width:100%;max-height:90vh;overflow-y:auto;padding:24px;position:relative}
 .modal-close{position:absolute;top:12px;right:14px;font-size:1.4rem;cursor:pointer;color:var(--text2);background:none;border:none;line-height:1}
@@ -1458,7 +1459,7 @@ function renderShelvesModal(){
       <button class="btn-sm" onclick="_shelfView=null;renderShelvesModal()" style="margin-bottom:10px">← Back</button>
       ${_shelfView==='upnext'?`<p style="color:var(--text2);font-size:.8rem;margin-bottom:8px">Drag to reorder →</p>`:''}
       ${extra?`<div class="modal-section" style="padding-top:0">${extra}</div>`:''}
-      ${bks.length?`${generateShareRow(_shelfView,ids)}<div class="mini-grid">${bks.map(b=>`<div class="shelf-mini-wrap${cardClassName}" data-book-id="${b.id}" onclick="closeShelves();setTimeout(()=>openModal('${esc(b.id)}'),40)" style="cursor:pointer">${miniImgEl(b.img,b.t)}<div class="mini-title">${esc(b.t)}</div><div class="mini-author">${esc(b.a)}</div><button class="shelf-mini-remove" onclick="event.stopPropagation();toggleShelf('${def.id}','${esc(b.id)}');renderShelvesModal()" title="Remove">✕</button></div>`).join('')}</div>`:'<p style="color:var(--text2);font-size:.86rem;padding:8px 0">No books on this shelf yet.</p>'}`;
+      ${bks.length?`${generateShareRow(_shelfView,ids)}<div class="mini-grid">${bks.map(b=>`<div class="shelf-mini-wrap${cardClassName}" data-book-id="${b.id}" onclick="openModal('${esc(b.id)}')" style="cursor:pointer">${miniImgEl(b.img,b.t)}<div class="mini-title">${esc(b.t)}</div><div class="mini-author">${esc(b.a)}</div><button class="shelf-mini-remove" onclick="event.stopPropagation();toggleShelf('${def.id}','${esc(b.id)}');renderShelvesModal()" title="Remove">✕</button></div>`).join('')}</div>`:'<p style="color:var(--text2);font-size:.86rem;padding:8px 0">No books on this shelf yet.</p>'}`;
     if(_shelfView==='upnext')setTimeout(setupUpNextDrag,50);
   } else {
     // Overview
