@@ -2696,7 +2696,7 @@ html = f"""<!DOCTYPE html>
     <input type="hidden" id="ext-editing-id">
     <div id="ext-lookup-section">
       <div class="ext-lookup-row">
-        <input type="text" id="ext-lookup-q" class="ext-lookup-inp" placeholder="Search by title or author to auto-fill…" onkeydown="if(event.key==='Enter'){event.preventDefault();lookupBookOnline();}">
+        <input type="text" id="ext-lookup-q" class="ext-lookup-inp" placeholder="Search by title or author to auto-fill…" onkeydown="if(event.key==='Enter'){{event.preventDefault();lookupBookOnline();}}">
         <button class="ext-lookup-btn" id="ext-lookup-btn" onclick="lookupBookOnline()">🔍 Look up</button>
       </div>
       <div id="ext-lookup-results"></div>
