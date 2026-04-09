@@ -1,10 +1,10 @@
-const CACHE = 'mcl-v5';
+const CACHE = 'mcl-v6';
 const SHELL = [
-  '/mclemore-library/',
-  '/mclemore-library/index.html',
-  '/mclemore-library/icon-192.png',
-  '/mclemore-library/icon-512.png',
-  '/mclemore-library/manifest.json'
+  './',
+  './index.html',
+  './icon-192.png',
+  './icon-512.png',
+  './manifest.json'
 ];
 
 self.addEventListener('install', e => {
@@ -29,6 +29,6 @@ self.addEventListener('fetch', e => {
         caches.open(CACHE).then(c => c.put(e.request, clone));
       }
       return resp;
-    }).catch(() => caches.match('/mclemore-library/')))
+    }).catch(() => caches.match('./')))
   );
 });
