@@ -2784,6 +2784,8 @@ print(f"HTML written: {len(html.encode())//1024} KB")
 repo = '/sessions/bold-awesome-sagan/McLemore-Library-work'
 shutil.copy(out, os.path.join(repo, 'index.html'))
 subprocess.run(['git','config','http.postBuffer','524288000'], cwd=repo, capture_output=True)
+subprocess.run(['git','config','user.email','davidmmclemore@gmail.com'], cwd=repo, capture_output=True)
+subprocess.run(['git','config','user.name','David McLemore'], cwd=repo, capture_output=True)
 subprocess.run(['git','add','index.html'], cwd=repo, capture_output=True)
 commit = subprocess.run(
     ['git','commit','-m','v6: analytics heatmap, goal ring, achievements, OL API, share cards, swipe, timer, PWA, bulk select'],
