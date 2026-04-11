@@ -1,7 +1,6 @@
 'use client'
 
 import Link from 'next/link'
-import Image from 'next/image'
 import { Book } from '@/lib/types'
 import { Plus } from 'lucide-react'
 import { useState } from 'react'
@@ -12,8 +11,17 @@ interface BookCardProps {
   showQuickAdd?: boolean
 }
 
+function CoverPlaceholder({ title }: { title: string }) {
+  return (
+    <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-indigo-200 to-indigo-100 dark:from-indigo-900 dark:to-indigo-800 p-3">
+      <span className="text-center text-xs font-medium text-indigo-700 dark:text-indigo-300 line-clamp-4 leading-snug">{title}</span>
+    </div>
+  )
+}
+
 export default function BookCard({ book, onQuickAdd, showQuickAdd = false }: BookCardProps) {
   const [showShelfMenu, setShowShelfMenu] = useState(false)
+  const [imgError, setImgError] = useState(false)
 
   const shelves = ['To Read', 'Currently Reading', 'Read', 'Loaned Out']
 
@@ -21,18 +29,16 @@ export default function BookCard({ book, onQuickAdd, showQuickAdd = false }: Boo
     <Link href={`/book/${book.id}`}>
       <div className="card group h-full overflow-hidden">
         <div className="relative aspect-[2/3] overflow-hidden bg-gray-100 dark:bg-gray-700">
-          {book.cover_url ? (
-            <Image
+          {book.cover_url && !imgError ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
               src={book.cover_url}
               alt={book.title}
-              fill
-              className="object-cover transition-transform duration-300 group-hover:scale-110"
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
+              onError={() => setImgError(true)}
             />
           ) : (
-            <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-indigo-200 to-indigo-100 dark:from-indigo-900 dark:to-indigo-800">
-              <span className="text-4xl">📖</span>
-            </div>
+            <CoverPlaceholder title={book.title} />
           )}
 
           {showQuickAdd && (
