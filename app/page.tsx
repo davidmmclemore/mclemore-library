@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { Suspense } from 'react'
 import { createServerComponentClient } from '@/lib/supabase/server'
 import BookOfDay from '@/components/BookOfDay'
